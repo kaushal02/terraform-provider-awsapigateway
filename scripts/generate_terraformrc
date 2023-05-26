@@ -1,0 +1,22 @@
+#!/bin/sh
+
+gobin=`go env GOBIN`
+if [ -z "${gobin}" ]; then
+    echo "GOBIN is not set"
+    exit 1
+fi
+
+cat << EOF
+# For local testing, this output should go to your terraformrc file
+# e.g. scripts/generate_terraformrc > ~/.terraformrc
+provider_installation {
+  dev_overrides {
+      "kaushal02/awsapigateway" = "${gobin}"
+  }
+
+  # For all other providers, install them directly from their origin provider
+  # registries as normal. If you omit this, Terraform will _only_ use
+  # the dev_overrides block, and so no other providers will be available.
+  direct {}
+}
+EOF
