@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -45,7 +44,7 @@ func createProvider(configureContextFunc schema.ConfigureContextFunc) *schema.Pr
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"lambdabased_resource": LambdaBasedResource(),
+			"awsapigateway_resource": AwsApiGatewayResource(),
 		},
 
 		ConfigureContextFunc: configureContextFunc,
@@ -70,5 +69,5 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		cfg.Credentials = aws.NewCredentialsCache(creds)
 	}
 
-	return lambda.NewFromConfig(cfg), nil
+	return newFromConfig(cfg), nil
 }
